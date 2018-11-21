@@ -1,5 +1,5 @@
 #!/bin/bash
-exe=(pctl ssgo)
+exe=(pctl sslocal)
 
 usage(){
     cat<<-EOF
