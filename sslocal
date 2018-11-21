@@ -28,7 +28,7 @@ start(){
             systemctl start sslocal
             ;;
         Darwin)
-            launchctl load -w "$home/Library/LaunchAgents/sslocal"
+            launchctl load -w "$home/Library/LaunchAgents/sslocal.plist"
             ;;
     esac
 }
@@ -39,7 +39,7 @@ stop(){
             systemctl stop sslocal
             ;;
         Darwin)
-            launchctl unload -w "$home/Library/LaunchAgents/sslocal"
+            launchctl unload -w "$home/Library/LaunchAgents/sslocal.plist"
             ;;
     esac
 }
