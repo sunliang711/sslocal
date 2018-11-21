@@ -45,7 +45,10 @@ install(){
             if [ ! -d "$home/Library/LaunchAgents" ];then
                 mkdir -p "$home/Library/LaunchAgents"
             fi
-            sed -e "s|ROOT|$root|g" Darwin/sslocal.plist "$home/Library/LaunchAgents/sslocal.plist"
+            sed -e "s|ROOT|$root|g" Darwin/sslocal.plist>"$home/Library/LaunchAgents/sslocal.plist"
+            if [ ! -d /usr/local/bin ];then
+                sudo mkdir /usr/local/bin && sudo chown $user /usr/local/bin && sudo chmod 775 /usr/local/bin
+            fi
             ln -sf "$root/sslocal" /usr/local/bin
             $editor config.json
             launchctl load -w $home/Library/LaunchAgents/sslocal.plist
