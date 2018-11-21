@@ -15,8 +15,8 @@ usage(){
     cat<<-EOF
 	Usage: $(basename $0) CMD
 	CMD:
-		install
-		uninstall
+	    install
+	    uninstall
 	EOF
     exit 1
 }
@@ -42,6 +42,9 @@ install(){
             sudo -- sh -c "$cmds"
             ;;
         Darwin)
+            if [ ! -d "$home/Library/LaunchAgents" ];then
+                mkdir -p "$home/Library/LaunchAgents"
+            fi
             sed -e "s|ROOT|$root|g" Darwin/sslocal.plist "$home/Library/LaunchAgents/sslocal.plist"
             ln -sf "$root/sslocal" /usr/local/bin
             $editor config.json
