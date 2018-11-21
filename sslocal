@@ -25,7 +25,7 @@ usage(){
 start(){
     case $(uname) in
         Linux)
-            systemctl start sslocal
+            sudo systemctl start sslocal
             ;;
         Darwin)
             launchctl load -w "$home/Library/LaunchAgents/sslocal.plist"
@@ -36,7 +36,7 @@ start(){
 stop(){
     case $(uname) in
         Linux)
-            systemctl stop sslocal
+            sudo systemctl stop sslocal
             ;;
         Darwin)
             launchctl unload -w "$home/Library/LaunchAgents/sslocal.plist"
