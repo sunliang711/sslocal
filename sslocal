@@ -1,0 +1,89 @@
+#!/bin/bash
+rpath=$(readlink $BASH_SOURCE)
+if [ -z $rpath ];then
+    rpath=$BASH_SOURCE
+fi
+
+root="$(cd $(dirname $rpath) && pwd)"
+cd "$root"
+
+user=${SUDO_USER:-$(whoami)}
+home=$(eval echo ~$user)
+
+usage(){
+    cat<<-EOF
+	Usage: $(basename $0) CMD
+	CMD:
+	    start
+	    stop
+	    restart
+	    config
+	    status
+	EOF
+}
+
+start(){
+    case $(uname) in
+        Linux)
+            systemctl start sslocal
+            ;;
+        Darwin)
+            launchctl load -w "$home/Library/LaunchAgents/sslocal"
+            ;;
+    esac
+}
+
+stop(){
+    case $(uname) in
+        Linux)
+            systemctl stop sslocal
+            ;;
+        Darwin)
+            launchctl unload -w "$home/Library/LaunchAgents/sslocal"
+            ;;
+    esac
+}
+
+status(){
+    case $(uname) in
+        Linux)
+            systemctl status sslocal
+            ;;
+        Darwin)
+            launchctl list|grep sslocal
+            ;;
+    esac
+}
+
+config(){
+    editor=vi
+    if command -v vim >/dev/null 2>&1;then
+        editor=vim
+    fi
+    $editor config.json
+}
+
+
+cmd=$1
+
+case $cmd in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    config)
+        config
+        ;;
+    status)
+        status
+        ;;
+    *)
+        usage
+        ;;
+esac

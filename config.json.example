@@ -1,0 +1,8 @@
+{
+    "server":"",
+    "server_port":,
+    "password":"",
+    "local_port":1080,
+    "method":""
+}
+

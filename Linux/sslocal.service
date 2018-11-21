@@ -1,0 +1,10 @@
+[Unit]
+Description=ss-go service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=ROOT/Linux/ss-local -c ROOT/config.json
+
+[Install]
+WantedBy=multi-user.target

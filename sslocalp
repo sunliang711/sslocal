@@ -1,0 +1,79 @@
+#!/bin/bash
+exe=(pctl ssgo)
+
+usage(){
+    cat<<-EOF
+	Usage: $(basename $0) CMD
+	CMD:
+	    start
+	    stop
+	    config
+	    restart
+	    status
+	    pac
+	EOF
+}
+
+run(){
+    cmd=$1
+    for i in "${exe[@]}";do
+        loc="$(which $i)"
+        echo "script path: $loc"
+        if [ -z "$loc" ];then
+            echo "Cann't find $i."
+            continue
+        fi
+        if grep -qE "^[[:blank:]]*(function )?$cmd[[:blank:]]*\([[:blank:]]*\)[[:blank:]]*{[[:blank:]]*$" "$loc";then
+            echo "run: $i $cmd"
+            $i $cmd
+        else
+            echo "no cmd: $cmd"
+            continue
+        fi
+    done
+}
+start(){
+    run start
+}
+
+stop(){
+    run stop
+}
+
+status(){
+    run status
+}
+
+config(){
+    run config
+}
+
+pac(){
+    run pac
+}
+cmd=$1
+
+case $cmd in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    config)
+        config
+        ;;
+    pac)
+        pac
+        ;;
+    *)
+        usage
+        ;;
+esac
